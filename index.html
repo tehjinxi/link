@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Linktree Clone</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-r from-purple-500 to-pink-500 min-h-screen py-12 px-4">
+    <div x-data="linkTree()" 
+         x-init="await initData()" 
+         class="max-w-md mx-auto">
+        <!-- Profile Section -->
+        <div class="text-center mb-8">
+            <div class="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4">
+                <img :src="profile.image" alt="Profile" class="w-full h-full object-cover">
+            </div>
+            <h1 class="text-2xl font-bold text-white mb-2" x-text="profile.username"></h1>
+            <p class="text-white opacity-90 mb-6" x-text="profile.bio"></p>
+
+            <!-- Horizontal Icons -->
+            <div class="flex justify-center gap-4 mb-8">
+                <template x-for="link in horizontalLinks" :key="link.title">
+                    <a :href="link.url" 
+                       class="w-12 h-12 flex items-center justify-center bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-lg rounded-full text-white transition-all duration-300 transform hover:scale-110"
+                       target="_blank"
+                       :title="link.title">
+                        <div class="w-6 h-6" x-html="link.icon"></div>
+                    </a>
+                </template>
+            </div>
+        </div>
+
+        <!-- Vertical Links Section -->         
+        <div class="space-y-4">
+            <template x-for="link in verticalLinks" :key="link.url">
+                <a :href="link.url" 
+                   class="block bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-lg rounded-lg p-2 text-white text-center transition-all duration-300 transform hover:scale-105"
+                   target="_blank"
+                   :title="link.title">
+                    <div class="flex items-center justify-center">
+                        <div class="w-12 h-12 rounded overflow-hidden mr-3 flex-shrink-0">
+                            <template x-if="link.image">
+                                <img :src="link.image" 
+                                     :alt="link.title" 
+                                     class="w-full h-full object-cover">
+                            </template>
+                            <template x-if="!link.image">
+                                <div class="w-full h-full bg-white bg-opacity-20 flex items-center justify-center">
+                                    <span class="text-sm">🔗</span>
+                                </div>
+                            </template>
+                        </div>
+                        <div x-text="link.title"></div>
+                    </div>
+                </a>
+            </template>
+        </div>
+    </div>
+
+    <script>
+        function linkTree() {
+            return {
+                profile: {},
+                horizontalLinks: [],
+                verticalLinks: [],
+                
+                async initData() {
+                    try {
+                        const response = await fetch('links.json');
+                        if (!response.ok) {
+                            throw new Error('Failed to fetch data');
+                        }
+                        const data = await response.json();
+                        this.profile = data.profile || {};
+                        this.horizontalLinks = data.horizontalLinks || [];
+                        this.verticalLinks = data.verticalLinks || [];
+                    } catch (error) {
+                        console.error('Error loading data:', error);
+                        // Set default values on error
+                        this.profile = {};
+                        this.horizontalLinks = [];
+                        this.verticalLinks = [];
+                    }
+                }
+            };
+        }
+    </script>
+</body>
+</html>
