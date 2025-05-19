@@ -35,17 +35,20 @@
         { 
             "title": "HHwalk Podcast", 
             "url": "https://www.youtube.com/playlist?list=PLJTYU7TWs51w0GpoHKc0oKTZnLmUVxUfh&si=k9HVw7B9XjhzTdsU",
-            "image": "https://i.ytimg.com/vi/pTW8P9dvgAU/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&amp;rs=AOn4CLCYXP46IkDdgU6HMStmZles4dha6A&amp;days_since_epoch=20226"
+            "image": "https://i.ytimg.com/vi/pTW8P9dvgAU/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&amp;rs=AOn4CLCYXP46IkDdgU6HMStmZles4dha6A&amp;days_since_epoch=20226",
+            "category": "content"
         },
         { 
             "title": "Shimono Vacuum 888", 
             "url": "https://s.shopee.com.my/6po7cqVDhU",
-            "image": "https://down-my.img.susercontent.com/file/my-11134207-7r98z-lvo1d1kl55wda0"
+            "image": "https://down-my.img.susercontent.com/file/my-11134207-7r98z-lvo1d1kl55wda0",
+            "category": "product"
         },
         { 
             "title": "Roaming Man Pocket Wifi - AMERM (Promo code 15% off)", 
             "url": "https://www.roamingman.my/product/index/search//11//",
-            "image": ""
+            "image": "",
+            "category": "product"
         }
     ]
 }
