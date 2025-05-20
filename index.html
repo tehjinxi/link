@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +7,12 @@
     <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gradient-to-r from-purple-500 to-pink-500 min-h-screen py-10 px-4">
+<body class="bg-gradient-to-r from-purple-500 to-pink-500 h-screen overflow-hidden">
     <div x-data="linkTree()" 
          x-init="await initData()" 
-         class="max-w-md mx-auto">
+         class="max-w-md mx-auto h-full py-10 px-4 flex flex-col">
         <!-- Profile Section -->
-        <div class="mb-3">
+        <div class="flex-shrink-0 mb-3">
             <div class="flex items-center justify-center gap-4">
                 <div class="w-24 h-24 rounded-full overflow-hidden flex-shrink-0">
                     <img :src="profile.image" alt="Profile" class="w-full h-full object-cover">
@@ -37,7 +37,7 @@
         </div>
 
         <!-- Tab Headers -->
-        <div class="flex mb-6 border-b border-white border-opacity-20">
+        <div class="flex-shrink-0 flex mb-6 border-b border-white border-opacity-20 sticky top-0 bg-gradient-to-r from-purple-500 to-pink-500 z-10">
             <button @click="activeCategory = 'product'" 
                     class="flex-1 py-3 text-white font-medium relative flex items-center justify-center"
                     :class="{'opacity-100': activeCategory === 'product', 'opacity-60': activeCategory !== 'product'}">
@@ -63,14 +63,14 @@
         </div>
 
         <!-- Vertical Links Section -->         
-        <div class="relative overflow-hidden touch-pan-x h-[calc(100vh-320px)]" 
+        <div class="relative overflow-hidden flex-1" 
              @touchstart="handleTouchStart($event)"
-             @touchmove="handleTouchMove($event)"
+             @touchmove="$event.target.closest('.overflow-y-auto') ? null : handleTouchMove($event)"
              @touchend="handleTouchEnd($event)">
-            <div class="flex transition-transform duration-300 ease-out h-full" 
+            <div class="flex h-full transition-transform duration-300 ease-out" 
                  :style="{ transform: `translateX(${activeCategory === 'product' ? '0' : '-100'}%)` }">
                 <!-- Product Links -->
-                <div class="w-full flex-shrink-0 px-1 overflow-y-auto">
+                <div class="w-full flex-shrink-0 px-1 h-full overflow-y-auto">
                     <template x-for="link in verticalLinks.filter(l => l.category === 'product')" :key="link.url">
                         <a :href="link.url" 
                            class="block bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-lg rounded-lg p-2 text-white mb-3 transition-all duration-300 transform hover:scale-105"
@@ -97,7 +97,7 @@
                 </div>
 
                 <!-- Content Links -->
-                <div class="w-full flex-shrink-0 px-1 overflow-y-auto">
+                <div class="w-full flex-shrink-0 px-1 h-full overflow-y-auto">
                     <template x-for="link in verticalLinks.filter(l => l.category === 'content')" :key="link.url">
                         <a :href="link.url" 
                            class="block bg-white bg-opacity-20 hover:bg-opacity-30 backdrop-blur-lg rounded-lg p-2 text-white mb-3 transition-all duration-300 transform hover:scale-105"
@@ -125,6 +125,8 @@
             </div>
         </div>
     </div>
+</body>
+</html>
 
     <script>
         function linkTree() {
@@ -138,6 +140,9 @@
                 isSwiping: false,
                 
                 handleTouchStart(event) {
+                    if (event.target.closest('.overflow-y-auto')) {
+                        return;
+                    }
                     this.touchStartX = event.touches[0].clientX;
                     this.isSwiping = true;
                 },
